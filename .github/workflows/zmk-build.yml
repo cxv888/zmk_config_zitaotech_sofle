@@ -25,7 +25,7 @@ jobs:
         uses: zmkfirmware/zmk-build-action@v6 # ZMK官方Action，版本可更新
         with:
           # 填写你的键盘板定义文件（如Corne键盘的corne_left.keymap、corne_right.keymap）
-          board: corne_cherry_v3 # 替换为你的键盘BOARD名称（从ZMK官方硬件库查）
+          board: zmk_config_zitaotech_sofle # 替换为你的键盘BOARD名称（从ZMK官方硬件库查）
           shield: corne_left corne_right # 分体键盘需指定左右shield，单键盘可省略
 
       # 步骤3：上传编译后的固件（.uf2/.bin文件）作为Actions产物，可下载
