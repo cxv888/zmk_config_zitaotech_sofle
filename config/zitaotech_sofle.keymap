@@ -53,6 +53,34 @@
         };
     };
 
+    macros {
+        new_macro1: new_macro1 {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LEFT_ALT &kp O &kp P>;
+            label = "NEW_MACRO1";
+        };
+
+        new_macro2: new_macro2 {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LEFT_ALT &kp N &kp P &kp D>;
+            label = "NEW_MACRO2";
+        };
+
+        new_macro3: new_macro3 {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings =
+                <&kp LEFT_ALT>,
+                <&macro_press>,
+                <&kp KP_NUMBER_4 &kp KP_NUMBER_1 &kp KP_NUMBER_4 &kp KP_NUMBER_3 &kp KP_NUMBER_6>,
+                <&macro_press>;
+
+            label = "NEW_MACRO3";
+        };
+    };
+
     keymap {
         compatible = "zmk,keymap";
 
@@ -74,14 +102,16 @@
         func_layer {
             display-name = "FUNC";
             bindings = <
-&kp GRAVE   &kp F1     &kp F2           &kp F3           &kp F4           &kp F5        &bt BT_CLR  &kp C_MUTE  &kp F6      &kp F7      &kp F8    &kp F9     &kp F10    &kp BSPC
-&kp F11     &kp F12    &kp KP_NUMBER_7  &kp KP_NUMBER_8  &kp KP_NUMBER_9  &out OUT_TOG  &kp F11     &kp F12     &kp UP      &kp UP      &trans    &kp ENTER
-&kp DELETE  &kp PLUS   &kp KP_NUMBER_4  &kp KP_NUMBER_5  &kp KP_NUMBER_6  &kp ASTRK     &mkp RCLK   &mkp RCLK   &trans      &kp LEFT    &kp DOWN  &kp RIGHT  &kp RIGHT  &kp SQT
-&trans      &kp MINUS  &kp KP_NUMBER_1  &kp KP_NUMBER_2  &kp KP_NUMBER_3  &kp SLASH     &trans      &trans      &bl BL_DEC  &bl BL_INC  &trans    &trans     &trans     &trans    &trans  &trans
-&kp KP_DOT  &kp KP_N0  &trans           &trans           &mo 1            &mo 1         &trans      &trans      &trans      &BOT
+&kp GRAVE   &kp F1     &kp F2           &kp F3           &kp F4           &kp F5        &kp LC(LA(DEL))  &kp C_MUTE  &kp F6      &kp F7      &kp F8    &kp F9     &kp F10  &kp BSPC
+&kp F11     &kp F12    &kp KP_NUMBER_7  &kp KP_NUMBER_8  &kp KP_NUMBER_9  &out OUT_TOG  &kp F11          &kp F12     &kp UP      &none       &trans    &kp ENTER
+&kp DELETE  &kp PLUS   &kp KP_NUMBER_4  &kp KP_NUMBER_5  &kp KP_NUMBER_6  &kp ASTRK     &mkp RCLK        &mkp RCLK   &trans      &kp LEFT    &kp DOWN  &kp RIGHT  &none    &none
+&trans      &kp MINUS  &kp KP_NUMBER_1  &kp KP_NUMBER_2  &kp KP_NUMBER_3  &kp SLASH     &trans           &trans      &bl BL_DEC  &bl BL_INC  &trans    &trans     &trans   &trans    &trans  &trans
+&kp KP_DOT  &kp KP_N0  &trans           &new_macro1      &new_macro2      &mo 1         &trans           &trans      &trans      &BOT
             >;
 
-            sensor-bindings = <&BLE_encoder &inc_dec_kp UP DOWN>;
+            sensor-bindings =
+                <&inc_dec_kp LEFT RIGHT>,
+                <&inc_dec_kp LA(LS(RIGHT)) LA(LS(LEFT))>;
         };
 
         RES_layer {
