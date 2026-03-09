@@ -1,0 +1,38 @@
+# ZMK固件自动编译Workflow
+name: ZMK Build Firmware
+# 触发条件：监听main分支的push/PR事件（编辑器推送到main分支时自动触发）
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+# 工作流任务
+jobs:
+  build:
+    name: Build Firmware
+    runs-on: ubuntu-latest # 基于Ubuntu虚拟机运行
+    steps:
+      # 步骤1：拉取zmk-config仓库的代码
+      - name: Checkout zmk-config
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          # 拉取ZMK主仓库作为子模块（ZMK编译依赖核心源码）
+          submodules: recursive
+
+      # 步骤2：使用ZMK官方编译Action（简化编译流程，无需手动配置环境）
+      - name: Build ZMK Firmware
+        uses: zmkfirmware/zmk-build-action@v6 # ZMK官方Action，版本可更新
+        with:
+          # 填写你的键盘板定义文件（如Corne键盘的corne_left.keymap、corne_right.keymap）
+          board: corne_cherry_v3 # 替换为你的键盘BOARD名称（从ZMK官方硬件库查）
+          shield: corne_left corne_right # 分体键盘需指定左右shield，单键盘可省略
+
+      # 步骤3：上传编译后的固件（.uf2/.bin文件）作为Actions产物，可下载
+      - name: Upload Firmware
+        uses: actions/upload-artifact@v4
+        with:
+          name: zmk-firmware
+          path: |
+            build/zephyr/zmk.uf2
+            build/zephyr/zmk.bin
